@@ -1,0 +1,25 @@
+version: "3.0"
+
+services:
+  web:
+    image: smoothwiki:1.0.0
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    environment:
+      ENV_DB_HOST: db
+      ENV_DB_PORT: 3306
+      ENV_DB_DATABASE: smoothwiki
+      ENV_DB_USERNAME: secret_user
+      ENV_DB_PASSWORD: secret_password
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: smoothwiki
+      MYSQL_USER: secret_user
+      MYSQL_PASSWORD: secret_password
+      MYSQL_ROOT_PASSWORD: secret_root_password

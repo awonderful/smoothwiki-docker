@@ -25,13 +25,12 @@ RUN mkdir /smoothwiki; \
     cd /smoothwiki/smoothwiki-backend; \
     composer install; \
     cp .env.example .env; \
-    sed -i 's/LOG_CHANNEL=.*$/LOG_CHANNEL=stderr/' .env; \
+    sed -i 's/LOG_CHANNEL=.*$/LOG_CHANNEL=daily/' .env; \
     chown -R nobody:nobody /smoothwiki/smoothwiki-backend/storage; \
     chown -R nobody:nobody /smoothwiki/smoothwiki-backend/bootstrap/cache; \
-    php artisan key:generate; \
-    php artisan optimize:clear; \
-    cp -r /smoothwiki/smoothwiki-frontend/dist/* /smoothwiki/smoothwiki-backend/public/
+    php artisan optimize:clear
 COPY nginx.conf /etc/nginx/http.d/default.conf
 COPY entrypoint.sh /smoothwiki/
 ENTRYPOINT /smoothwiki/entrypoint.sh
 EXPOSE 80
+VOLUME ["/smoothwiki/smoothwiki-backend/storage"]
